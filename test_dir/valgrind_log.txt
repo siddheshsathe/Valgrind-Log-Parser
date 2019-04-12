@@ -1,0 +1,107 @@
+==23337== Memcheck, a memory error detector
+==23337== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==23337== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==23337== Command: ./test_leaker
+==23337== Parent PID: 15864
+==23337== 
+--23337-- 
+--23337-- Valgrind options:
+--23337--    --show-reachable=yes
+--23337--    --leak-check=full
+--23337--    -v
+--23337--    --log-file=valgrind_log.txt
+--23337--    --vex-iropt-register-updates=allregs-at-mem-access
+--23337-- Contents of /proc/version:
+--23337--   Linux version 4.15.0-46-generic (buildd@lgw01-amd64-008) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.10)) #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+--23337-- 
+--23337-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
+--23337-- Page sizes: currently 4096, max supported 4096
+--23337-- Valgrind library directory: /usr/lib/valgrind
+--23337-- Reading syms from /home/siddheshs/programs/github/Valgrind-Log-Parser/test_dir/test_leaker
+--23337-- Reading syms from /lib/x86_64-linux-gnu/ld-2.23.so
+--23337--   Considering /lib/x86_64-linux-gnu/ld-2.23.so ..
+--23337--   .. CRC mismatch (computed aa979a42 wanted 9019bbb7)
+--23337--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.23.so ..
+--23337--   .. CRC is valid
+--23337-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--23337--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
+--23337--   .. CRC mismatch (computed eea41ea9 wanted 2009db78)
+--23337--    object doesn't have a symbol table
+--23337--    object doesn't have a dynamic symbol table
+--23337-- Scheduler: using generic scheduler lock implementation.
+--23337-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==23337== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-23337-by-siddheshs-on-???
+==23337== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-23337-by-siddheshs-on-???
+==23337== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-23337-by-siddheshs-on-???
+==23337== 
+==23337== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==23337== don't want to do, unless you know exactly what you're doing,
+==23337== or are doing some strange experiment):
+==23337==   /usr/lib/valgrind/../../bin/vgdb --pid=23337 ...command...
+==23337== 
+==23337== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==23337==   /path/to/gdb ./test_leaker
+==23337== and then give GDB the following command
+==23337==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=23337
+==23337== --pid is optional if only one valgrind process is running
+==23337== 
+--23337-- REDIR: 0x401cfd0 (ld-linux-x86-64.so.2:strlen) redirected to 0x3809e181 (???)
+--23337-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--23337--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
+--23337--   .. CRC mismatch (computed 2567ccf6 wanted 49420590)
+--23337--    object doesn't have a symbol table
+--23337-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--23337--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
+--23337--   .. CRC mismatch (computed 0e27c9a8 wanted ac585421)
+--23337--    object doesn't have a symbol table
+==23337== WARNING: new redirection conflicts with existing -- ignoring it
+--23337--     old: 0x0401cfd0 (strlen              ) R-> (0000.0) 0x3809e181 ???
+--23337--     new: 0x0401cfd0 (strlen              ) R-> (2007.0) 0x04c31020 strlen
+--23337-- REDIR: 0x401b920 (ld-linux-x86-64.so.2:index) redirected to 0x4c30bc0 (index)
+--23337-- REDIR: 0x401bb40 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c320d0 (strcmp)
+--23337-- REDIR: 0x401dd30 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c35270 (mempcpy)
+--23337-- Reading syms from /lib/x86_64-linux-gnu/libc-2.23.so
+--23337--   Considering /lib/x86_64-linux-gnu/libc-2.23.so ..
+--23337--   .. CRC mismatch (computed 7a8ee3e4 wanted a5190ac4)
+--23337--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.23.so ..
+--23337--   .. CRC is valid
+--23337-- REDIR: 0x4ec9a00 (libc.so.6:strcasecmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--23337-- REDIR: 0x4ec5280 (libc.so.6:strcspn) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--23337-- REDIR: 0x4ecbcf0 (libc.so.6:strncasecmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--23337-- REDIR: 0x4ec76f0 (libc.so.6:strpbrk) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--23337-- REDIR: 0x4ec7a80 (libc.so.6:strspn) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--23337-- REDIR: 0x4ec914b (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--23337-- REDIR: 0x4ec7400 (libc.so.6:rindex) redirected to 0x4c308a0 (rindex)
+--23337-- REDIR: 0x4ebe130 (libc.so.6:malloc) redirected to 0x4c2db20 (malloc)
+==23337== Conditional jump or move depends on uninitialised value(s)
+==23337==    at 0x400580: main (test_leaker.c:7)
+==23337== 
+--23337-- REDIR: 0x4ed0760 (libc.so.6:strchrnul) redirected to 0x4c34da0 (strchrnul)
+--23337-- REDIR: 0x4ebe4f0 (libc.so.6:free) redirected to 0x4c2ed80 (free)
+==23337== 
+==23337== HEAP SUMMARY:
+==23337==     in use at exit: 1,000 bytes in 1 blocks
+==23337==   total heap usage: 2 allocs, 1 frees, 2,024 bytes allocated
+==23337== 
+==23337== Searching for pointers to 1 not-freed blocks
+==23337== Checked 63,264 bytes
+==23337== 
+==23337== 1,000 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==23337==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23337==    by 0x400577: main (test_leaker.c:5)
+==23337== 
+==23337== LEAK SUMMARY:
+==23337==    definitely lost: 1,000 bytes in 1 blocks
+==23337==    indirectly lost: 0 bytes in 0 blocks
+==23337==      possibly lost: 0 bytes in 0 blocks
+==23337==    still reachable: 0 bytes in 0 blocks
+==23337==         suppressed: 0 bytes in 0 blocks
+==23337== 
+==23337== Use --track-origins=yes to see where uninitialised values come from
+==23337== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==23337== 
+==23337== 1 errors in context 1 of 2:
+==23337== Conditional jump or move depends on uninitialised value(s)
+==23337==    at 0x400580: main (test_leaker.c:7)
+==23337== 
+==23337== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
