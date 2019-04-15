@@ -56,14 +56,6 @@ class ValgrindLogParser(object):
         return self._end_regex
     
     @property
-    def htmlTableAttributes(self):
-        return {
-            "style": "width:100%",
-            "bgcolor": "white",
-            "border": 1
-        }
-
-    @property
     def htmlBuildDirection(self):
         return "LEFT_TO_RIGHT"
 
@@ -104,7 +96,7 @@ class ValgrindLogParser(object):
             while('' in self.errors_dict.get(self.valgrind_log_file).get(error_type)):
                 self.errors_dict.get(self.valgrind_log_file).get(error_type).remove('')
         html = '<link rel="stylesheet" href="style.css"> '
-        html += json2table.convert(self.errors_dict, build_direction=self.htmlBuildDirection, table_attributes=self.htmlTableAttributes)
+        html += json2table.convert(self.errors_dict, build_direction=self.htmlBuildDirection)
         with open('valgrind_html_report.html', 'w') as reportFile:
             reportFile.write(html)
 
