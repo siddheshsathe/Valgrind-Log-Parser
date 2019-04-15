@@ -103,7 +103,8 @@ class ValgrindLogParser(object):
         for error_type in ['memory_leaks', 'syscall_ioctls', 'cond_jump_errors']:
             while('' in self.errors_dict.get(self.valgrind_log_file).get(error_type)):
                 self.errors_dict.get(self.valgrind_log_file).get(error_type).remove('')
-        html = json2table.convert(self.errors_dict, build_direction=self.htmlBuildDirection, table_attributes=self.htmlTableAttributes)
+        html = '<link rel="stylesheet" href="style.css"> '
+        html += json2table.convert(self.errors_dict, build_direction=self.htmlBuildDirection, table_attributes=self.htmlTableAttributes)
         with open('valgrind_html_report.html', 'w') as reportFile:
             reportFile.write(html)
 
