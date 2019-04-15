@@ -8,6 +8,25 @@ Use pip to install these requirements.
 ```bash
 pip install -r requriements.txt
 ```
+## Pip install
+One can install valgrind parser tool from pip as well.
+```bash
+pip install valgrind_parser
+```
+Import the package as
+```python
+>>> from valgrind_parser import ValgrindLogParser
+>>> vlp = ValgrindLogParser('/path/to/valgrind_logs.txt')
+>>> vlp.generate_html_report()
+```
+This will dump the html report for input `valgrind_logs.txt` in the same directory from where the program was called.
+
+## Cloning the repo
+`Valgrind-Log-Parser` can also be used by cloning the repo locally and using the python file directly.
+Clone the repo with below command and use as given in next sections.
+```bash
+git clone git@github.com:<your username>/Valgrind-Log-Parser.git
+```
 
 ## How to use
 Under test_leaker directory, `test_leaker.c` file is present. This file is having a memory leak and a condition check with a variable which is not initialized before. <br>
@@ -54,17 +73,4 @@ Provide `valgrind_log.txt` file in argument to `valgrind_log_parser.py` and it w
 python valgrind_log_parser.py --valgrind_file <path to valgrind_log.txt file>
 ```
 Following table will be generated with the above run.
-
-<table bgcolor="white" style="width:100%" border="1">
-<tr><th>test_dir/valgrind_log.txt</th>
-    <td><table bgcolor="white" style="width:100%" border="1">
-        <tr><th>syscall_ioctls</th>
-        <td><ul></ul></td></tr><tr><th>cond_jump_errors</th><td><ul>
-            <li>==23337== Conditional jump or move depends on uninitialised value(s) <br>==23337==    at 0x400580: main (test_leaker.c:7) <br></li>
-            <li>==23337== Conditional jump or move depends on uninitialised value(s) <br>==23337==    at 0x400580: main (test_leaker.c:7) <br></li></ul></td></tr>
-        <tr><th>memory_leaks</th>
-            <td><ul><li>==23337== 1,000 bytes in 1 blocks are definitely lost in loss record 1 of 1 <br>==23337==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so) <br>==23337==    by 0x400577: main (test_leaker.c:5) <br></li></ul></td>
-        </tr>
-    </table></td></tr>
-</table>
-
+<img src="valgrind_parser/valgrind_report.jpg" alt="Valgrind HTML Report">
