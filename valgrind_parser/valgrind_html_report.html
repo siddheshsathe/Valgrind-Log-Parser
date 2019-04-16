@@ -1,1 +1,35 @@
-<link rel="stylesheet" href="style.css"> <table><tr><th>valgrind_parser/test_dir/valgrind_log.txt</th><td><table><tr><th>syscall_ioctls</th><td><ul></ul></td></tr><tr><th>cond_jump_errors</th><td><ul><li>==23337== Conditional jump or move depends on uninitialised value(s) <br>==23337==    at 0x400580: main (test_leaker.c:7) <br></li><li>==23337== Conditional jump or move depends on uninitialised value(s) <br>==23337==    at 0x400580: main (test_leaker.c:7) <br></li></ul></td></tr><tr><th>memory_leaks</th><td><ul><li>==23337== 1,000 bytes in 1 blocks are definitely lost in loss record 1 of 1 <br>==23337==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so) <br>==23337==    by 0x400577: main (test_leaker.c:5) <br></li></ul></td></tr></table></td></tr></table>
+<style>
+table {
+color: #333;
+font-family: Helvetica, Arial, sans-serif;
+width: 1080px;
+border-collapse:
+collapse; border-spacing: 0;
+}
+
+td, th {
+border: 2px solid; /* No more visible border */
+height: 30px;
+transition: all 0.3s; /* Simple transition for hover effect */
+}
+
+th {
+background: #45B39D; /* Darken header a bit */
+font-weight: bold;
+}
+
+td {
+background: #FAFAFA;
+text-align: left;
+}
+
+/* Cells in even rows (2,4,6...) are one color */
+tr:nth-child(even) td { background: #F1F1F1; }
+
+/* Cells in odd rows (1,3,5...) are another (excludes header cells) */
+tr:nth-child(odd) td { background: #85C1E9; }
+
+tr td:hover { background: #666; color: #FFF; }
+/* Hover cell effect! */
+</style>
+<table><tr><th>test_dir/valgrind_log.txt</th><td><table><tr><th>syscall_ioctls</th><td><ul></ul></td></tr><tr><th>cond_jump_errors</th><td><ul><li>==23337== Conditional jump or move depends on uninitialised value(s) <br>==23337==    at 0x400580: main (test_leaker.c:7) <br></li><li>==23337== Conditional jump or move depends on uninitialised value(s) <br>==23337==    at 0x400580: main (test_leaker.c:7) <br></li></ul></td></tr><tr><th>memory_leaks</th><td><ul><li>==23337== 1,000 bytes in 1 blocks are definitely lost in loss record 1 of 1 <br>==23337==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so) <br>==23337==    by 0x400577: main (test_leaker.c:5) <br></li></ul></td></tr></table></td></tr></table>

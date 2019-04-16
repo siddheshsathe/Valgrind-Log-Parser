@@ -5,7 +5,7 @@ import argparse
 
 from glob import glob
 from utils import JsonHelper
-
+from _version import _version
 
 class ValgrindLogParser(object):
     """
@@ -13,6 +13,7 @@ class ValgrindLogParser(object):
     Arguments:
         valgrind_log_file (str): Relative or absolute path of valgrind logs file to parse
     """
+    __version__ = _version
     def __init__(self,
                 valgrind_log_file      # Single valgrind log file
                 ):
@@ -95,7 +96,41 @@ class ValgrindLogParser(object):
         for error_type in ['memory_leaks', 'syscall_ioctls', 'cond_jump_errors']:
             while('' in self.errors_dict.get(self.valgrind_log_file).get(error_type)):
                 self.errors_dict.get(self.valgrind_log_file).get(error_type).remove('')
-        html = '<link rel="stylesheet" href="style.css"> '
+        html = """<style>
+                    table {
+                        color: #333;
+                        font-family: Helvetica, Arial, sans-serif;
+                        width: 1080px;
+                        border-collapse:
+                        collapse; border-spacing: 0;
+                    }
+
+                    td, th {
+                        border: 2px solid; /* No more visible border */
+                        height: 30px;
+                        transition: all 0.3s;  /* Simple transition for hover effect */
+                    }
+
+                    th {
+                        background: #45B39D;  /* Darken header a bit */
+                        font-weight: bold;
+                    }
+
+                    td {
+                        background: #FAFAFA;
+                        text-align: left;
+                    }
+
+                    /* Cells in even rows (2,4,6...) are one color */
+                    tr:nth-child(even) td { background: #F1F1F1; }
+
+                    /* Cells in odd rows (1,3,5...) are another (excludes header cells) */
+                    tr:nth-child(odd) td { background: #85C1E9; }
+
+                    tr td:hover { background: #666; color: #FFF; }
+                    /* Hover cell effect! */
+                    </style>
+                    """
         html += json2table.convert(self.errors_dict, build_direction=self.htmlBuildDirection)
         with open('valgrind_html_report.html', 'w') as reportFile:
             reportFile.write(html)
