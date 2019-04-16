@@ -6,11 +6,6 @@ import argparse
 from glob import glob
 _version = '0.2.1.0'
 
-import json
-class JsonHelper(object):
-    def __init__(self, fPath):
-        with open(fPath, 'r') as inF:
-            self.__dict__ = json.load(inF)
 
 class ValgrindLogParser(object):
     """
@@ -28,7 +23,16 @@ class ValgrindLogParser(object):
         self._end_regex = None
 
         self.valgrind_log_file = valgrind_log_file
-        self.regex_json = JsonHelper(os.path.join(os.path.dirname(__file__), 'parser_regex.json'))
+        self.regex_json = {
+                        "error_start_regexes": {
+                            "memory_leak_start": "^==\\d+==\\s+.*are definitely lost.*$",
+                            "syscall_errors": "^==\\d+==\\s+.*Syscall param ioctl\\(generic\\) points to uninitialised byte\\(s\\).*$",
+                            "conditional_jump_errors": "^==\\d+==\\s+.*Conditional jump or move depends on uninitialised value\\(s\\).*$"
+                        },
+                        "error_end_regexes":{
+                            "all_error_end_regex": "^==\\d+==\\s+$"
+                        }
+                    }
         self.errors_dict = {
             self.valgrind_log_file:{
             "memory_leaks": [],
@@ -40,25 +44,25 @@ class ValgrindLogParser(object):
     @property
     def memleak_regex(self):
         if not self._memleak_regex:
-            self._memleak_regex = re.compile(self.regex_json.error_start_regexes.get('memory_leak_start'), re.I)
+            self._memleak_regex = re.compile(self.regex_json.get('error_start_regexes').get('memory_leak_start'), re.I)
         return self._memleak_regex
 
     @property
     def syscall_ioctl_regex(self):
         if not self._syscall_ioctl_regex:
-            self._syscall_ioctl_regex = re.compile(self.regex_json.error_start_regexes.get('syscall_errors'), re.I)
+            self._syscall_ioctl_regex = re.compile(self.regex_json.get('error_start_regexes').get('syscall_errors'), re.I)
         return self._syscall_ioctl_regex
 
     @property
     def conditional_jump_regex(self):
         if not self._conditional_jump_regex:
-            self._conditional_jump_regex = re.compile(self.regex_json.error_start_regexes.get('conditional_jump_errors'), re.I)
+            self._conditional_jump_regex = re.compile(self.regex_json.get('error_start_regexes').get('conditional_jump_errors'), re.I)
         return self._conditional_jump_regex
 
     @property
     def end_regex(self):
         if not self._end_regex:
-            self._end_regex = re.compile(self.regex_json.error_end_regexes.get('all_error_end_regex'), re.I)
+            self._end_regex = re.compile(self.regex_json.get('error_end_regexes').get('all_error_end_regex'), re.I)
         return self._end_regex
     
     @property

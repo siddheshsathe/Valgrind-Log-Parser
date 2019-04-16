@@ -5,7 +5,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
     long_description = f.read()
 
 setup(name='valgrind_parser',
-      version='0.2.1.0',
+      version='0.2.2.1',
       description='The valgrind logs parser. Creates the html report from txt logs.',
       long_description=long_description,
       long_description_content_type='text/markdown',
