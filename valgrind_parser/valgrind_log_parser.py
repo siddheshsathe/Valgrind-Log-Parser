@@ -4,8 +4,13 @@ import json2table
 import argparse
 
 from glob import glob
-from utils import JsonHelper
-from _version import _version
+_version = '0.2.1.0'
+
+import json
+class JsonHelper(object):
+    def __init__(self, fPath):
+        with open(fPath, 'r') as inF:
+            self.__dict__ = json.load(inF)
 
 class ValgrindLogParser(object):
     """
