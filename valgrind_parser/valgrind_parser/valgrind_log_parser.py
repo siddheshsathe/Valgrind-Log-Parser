@@ -4,6 +4,8 @@ import json2table
 import argparse
 
 from glob import glob
+from utils.json_helper import JsonHelper
+from utils.html_converter import dump_html_report
 _version = '0.2.1.0'
 
 
@@ -12,10 +14,12 @@ class ValgrindLogParser(object):
     This class helps create HTML report out of a valgrind logs
     Arguments:
         valgrind_log_file (str): Relative or absolute path of valgrind logs file to parse
+        html_report_location (str): Location of html file to be dumped
     """
     __version__ = _version
     def __init__(self,
-                valgrind_log_file      # Single valgrind log file
+                valgrind_log_file ,     # Single valgrind log file
+                html_report_location=None    # Location of html report to dump
                 ):
         self._memleak_regex = None
         self._syscall_ioctl_regex = None
@@ -23,16 +27,10 @@ class ValgrindLogParser(object):
         self._end_regex = None
 
         self.valgrind_log_file = valgrind_log_file
-        self.regex_json = {
-                        "error_start_regexes": {
-                            "memory_leak_start": "^==\\d+==\\s+.*are definitely lost.*$",
-                            "syscall_errors": "^==\\d+==\\s+.*Syscall param ioctl\\(generic\\) points to uninitialised byte\\(s\\).*$",
-                            "conditional_jump_errors": "^==\\d+==\\s+.*Conditional jump or move depends on uninitialised value\\(s\\).*$"
-                        },
-                        "error_end_regexes":{
-                            "all_error_end_regex": "^==\\d+==\\s+$"
-                        }
-                    }
+        if not html_report_location:
+            html_report_location = os.getcwd()
+        self.html_report_location=html_report_location
+        self.regex_json = JsonHelper(os.path.join(os.path.dirname(__file__), 'data', 'valgrind_regexes.json'))
         self.errors_dict = {
             self.valgrind_log_file:{
             "memory_leaks": [],
@@ -44,30 +42,26 @@ class ValgrindLogParser(object):
     @property
     def memleak_regex(self):
         if not self._memleak_regex:
-            self._memleak_regex = re.compile(self.regex_json.get('error_start_regexes').get('memory_leak_start'), re.I)
+            self._memleak_regex = re.compile(self.regex_json.error_start_regexes.get('memory_leak_start'), re.I)
         return self._memleak_regex
 
     @property
     def syscall_ioctl_regex(self):
         if not self._syscall_ioctl_regex:
-            self._syscall_ioctl_regex = re.compile(self.regex_json.get('error_start_regexes').get('syscall_errors'), re.I)
+            self._syscall_ioctl_regex = re.compile(self.regex_json.error_start_regexes.get('syscall_errors'), re.I)
         return self._syscall_ioctl_regex
 
     @property
     def conditional_jump_regex(self):
         if not self._conditional_jump_regex:
-            self._conditional_jump_regex = re.compile(self.regex_json.get('error_start_regexes').get('conditional_jump_errors'), re.I)
+            self._conditional_jump_regex = re.compile(self.regex_json.error_start_regexes.get('conditional_jump_errors'), re.I)
         return self._conditional_jump_regex
 
     @property
     def end_regex(self):
         if not self._end_regex:
-            self._end_regex = re.compile(self.regex_json.get('error_end_regexes').get('all_error_end_regex'), re.I)
+            self._end_regex = re.compile(self.regex_json.error_end_regexes.get('all_error_end_regex'), re.I)
         return self._end_regex
-    
-    @property
-    def htmlBuildDirection(self):
-        return "LEFT_TO_RIGHT"
 
     def _parser(self):
         with open(self.valgrind_log_file, 'r') as in_file:
@@ -101,54 +95,14 @@ class ValgrindLogParser(object):
 
     def generate_html_report(self):
         self._parser()
-        print('Removing empty entries')
-        for error_type in ['memory_leaks', 'syscall_ioctls', 'cond_jump_errors']:
-            while('' in self.errors_dict.get(self.valgrind_log_file).get(error_type)):
-                self.errors_dict.get(self.valgrind_log_file).get(error_type).remove('')
-        html = """<style>
-                    table {
-                        color: #333;
-                        font-family: Helvetica, Arial, sans-serif;
-                        width: 1080px;
-                        border-collapse:
-                        collapse; border-spacing: 0;
-                    }
-
-                    td, th {
-                        border: 2px solid; /* No more visible border */
-                        height: 30px;
-                        transition: all 0.3s;  /* Simple transition for hover effect */
-                    }
-
-                    th {
-                        background: #45B39D;  /* Darken header a bit */
-                        font-weight: bold;
-                    }
-
-                    td {
-                        background: #FAFAFA;
-                        text-align: left;
-                    }
-
-                    /* Cells in even rows (2,4,6...) are one color */
-                    tr:nth-child(even) td { background: #F1F1F1; }
-
-                    /* Cells in odd rows (1,3,5...) are another (excludes header cells) */
-                    tr:nth-child(odd) td { background: #85C1E9; }
-
-                    tr td:hover { background: #666; color: #FFF; }
-                    /* Hover cell effect! */
-                    </style>
-                    """
-        html += json2table.convert(self.errors_dict, build_direction=self.htmlBuildDirection)
-        with open('valgrind_html_report.html', 'w') as reportFile:
-            reportFile.write(html)
+        dump_html_report(self.errors_dict, html_report_location=self.html_report_location)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--valgrind_file', required=True, help="Provide the path of the valgrind file. Files must be of .txt format")
+    parser.add_argument('--html_report_location', default='~/', help="Location of HTML report to get dumped at. Default is ~/")
 
     args = parser.parse_args()
     print('Searching for all files under '.format(args.valgrind_file))
-    v = ValgrindLogParser(args.valgrind_file)
+    v = ValgrindLogParser(args.valgrind_file, args.html_report_location)
     v.generate_html_report()
