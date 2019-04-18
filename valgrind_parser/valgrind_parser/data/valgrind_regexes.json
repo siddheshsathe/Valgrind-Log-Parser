@@ -1,0 +1,10 @@
+{
+    "error_start_regexes": {
+        "memory_leak_start": "^==\\d+==\\s+.*are definitely lost.*$",
+        "syscall_errors": "^==\\d+==\\s+.*Syscall param ioctl\\(generic\\) points to uninitialised byte\\(s\\).*$",
+        "conditional_jump_errors": "^==\\d+==\\s+.*Conditional jump or move depends on uninitialised value\\(s\\).*$"
+    },
+    "error_end_regexes":{
+        "all_error_end_regex": "^==\\d+==\\s+$"
+    }
+}
