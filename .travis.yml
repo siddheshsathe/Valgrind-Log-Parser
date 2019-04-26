@@ -5,5 +5,7 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install pytest
+  - pip install pycodestyle
 script:
+  - pycodestyle tests/valgrind_parser_test.py valgrind_parser/valgrind_parser/valgrind_log_parser.py valgrind_parser/valgrind_parser/utils/*.py
   - PYTHONPATH=. pytest tests
