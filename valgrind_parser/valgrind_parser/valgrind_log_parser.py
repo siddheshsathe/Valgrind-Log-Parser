@@ -17,10 +17,12 @@ class ValgrindLogParser(object):
         html_report_location (str): Location of html file to be dumped
     """
     __version__ = _version
-    def __init__(self,
-                valgrind_log_file ,     # Single valgrind log file
-                html_report_location=None    # Location of html report to dump
-                ):
+
+    def __init__(
+        self,
+        valgrind_log_file,     # Single valgrind log file
+        html_report_location=None    # Location of html report to dump
+    ):
         self._memleak_regex = None
         self._syscall_ioctl_regex = None
         self._conditional_jump_regex = None
@@ -29,13 +31,13 @@ class ValgrindLogParser(object):
         self.valgrind_log_file = valgrind_log_file
         if not html_report_location:
             html_report_location = os.getcwd()
-        self.html_report_location=html_report_location
+        self.html_report_location = html_report_location
         self.regex_json = JsonHelper(os.path.join(os.path.dirname(__file__), 'data', 'valgrind_regexes.json'))
         self.errors_dict = {
-            self.valgrind_log_file:{
-            "memory_leaks": [],
-            "syscall_ioctls": [],
-            "cond_jump_errors": []
+            self.valgrind_log_file: {
+                "memory_leaks": [],
+                "syscall_ioctls": [],
+                "cond_jump_errors": []
             }
         }
 
@@ -54,7 +56,10 @@ class ValgrindLogParser(object):
     @property
     def conditional_jump_regex(self):
         if not self._conditional_jump_regex:
-            self._conditional_jump_regex = re.compile(self.regex_json.error_start_regexes.get('conditional_jump_errors'), re.I)
+            self._conditional_jump_regex = re.compile(
+                pattern=self.regex_json.error_start_regexes.get('conditional_jump_errors'),
+                flags=re.I
+            )
         return self._conditional_jump_regex
 
     @property
@@ -79,7 +84,7 @@ class ValgrindLogParser(object):
                     if end_match:
                         append_lines_flag = False
                         # Dumping all trace lines to dictionary
-                        if not line == '' or not line == None:
+                        if not line == '' or line is not None:
                             if matched_regex == self.memleak_regex:
                                 self.errors_dict.get(self.valgrind_log_file).get('memory_leaks').append(leak_trace)
                             if matched_regex == self.syscall_ioctl_regex:
@@ -89,7 +94,7 @@ class ValgrindLogParser(object):
                         leak_trace = ''
 
                     if append_lines_flag:
-                        if not line == '' or not line == None:
+                        if not line == '' or line is not None:
                             leak_trace += "{line} <br>".format(line=line.strip('\n'))
                         break
 
@@ -97,12 +102,17 @@ class ValgrindLogParser(object):
         self._parser()
         dump_html_report(self.errors_dict, html_report_location=self.html_report_location)
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--valgrind_file', required=True, help="Provide the path of the valgrind file. Files must be of .txt format")
-    parser.add_argument('--html_report_location', default='~/', help="Location of HTML report to get dumped at. Default is ~/")
+    parser.add_argument('--valgrind_file',
+                        required=True,
+                        help="Provide the path of the valgrind file. Files must be of .txt format")
+
+    parser.add_argument('--html_report_location',
+                        default='./valgrind_html_report.html',
+                        help="Location of HTML report to get dumped at. Default is ./valgrind_html_report.html")
 
     args = parser.parse_args()
-    print('Searching for all files under '.format(args.valgrind_file))
     v = ValgrindLogParser(args.valgrind_file, args.html_report_location)
     v.generate_html_report()

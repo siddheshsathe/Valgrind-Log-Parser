@@ -46,14 +46,15 @@ def __get_html_string_formattted(html):
         html = html.replace(char, char + ' \n')
     return html
 
-def dump_html_report(errors_dict={}, html_report_location='~/'):
-        global html
-        print('Removing empty entries')
-        for log_file_name in errors_dict.keys():
-            for error_type in ['memory_leaks', 'syscall_ioctls', 'cond_jump_errors']:
-                while('' in errors_dict.get(log_file_name).get(error_type)):
-                    errors_dict.get(log_file_name).get(error_type).remove('')
-        html += json2table.convert(errors_dict, build_direction=HTML_BUILD_DIRECTION)
-        html = __get_html_string_formattted(html)
-        with open(os.path.join(html_report_location, 'valgrind_html_report.html'), 'w+') as reportFile:
-            reportFile.write(html)
+def dump_html_report(errors_dict={}, html_report_location=None):
+    if not html_report_location:
+        html_report_location = os.path.join(os.getenv('HOME'), 'valgrind_html_report.html')
+    global html
+    for log_file_name in errors_dict.keys():
+        for error_type in ['memory_leaks', 'syscall_ioctls', 'cond_jump_errors']:
+            while('' in errors_dict.get(log_file_name).get(error_type)):
+                errors_dict.get(log_file_name).get(error_type).remove('')
+    html += json2table.convert(errors_dict, build_direction=HTML_BUILD_DIRECTION)
+    html = __get_html_string_formattted(html)
+    with open(html_report_location, 'w+') as reportFile:
+        reportFile.write(html)
