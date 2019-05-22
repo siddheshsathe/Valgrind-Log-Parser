@@ -8,4 +8,4 @@ install:
 script:
   - PYTHONPATH=. pycodestyle --config=./pycodestyle_config .
   - PYTHONPATH=. pytest tests
-  - python -c "from valgrind_parser import ValgrindLogParser"
+  - PYTHONPATH=. python -c "from valgrind_parser import ValgrindLogParser"
