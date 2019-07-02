@@ -6,7 +6,8 @@ class TestValgrindParser(object):
 
     def teardown_class(cls):
         import os
-        if os.path.exists(cls.html_report_location): os.remove(cls.html_report_location)
+        if os.path.exists(cls.html_report_location):
+            os.remove(cls.html_report_location)
 
     def test_json_helper(self):
         jsonPath = 'valgrind_parser/valgrind_parser/data/valgrind_regexes.json'
