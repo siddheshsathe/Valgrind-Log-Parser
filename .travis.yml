@@ -7,4 +7,4 @@ install:
   - pip install pycodestyle
 script:
   - PYTHONPATH=. pycodestyle --config=./pycodestyle_config .
-  - PYTHONPATH=. pytest tests -v
+  - PYTHONPATH=. pytest  -v --doctest-modules --rootdir=. tests
