@@ -4,9 +4,9 @@ import json2table
 import argparse
 
 from glob import glob
-from utils.json_helper import JsonHelper
-from utils.html_converter import dump_html_report
-from utils.decorators import singleton, trycatch
+from valgrind_parser.valgrind_parser.utils.json_helper import JsonHelper
+from valgrind_parser.valgrind_parser.utils.html_converter import dump_html_report
+from valgrind_parser.valgrind_parser.utils.decorators import singleton, trycatch
 _version = '0.2.1.0'
 
 
