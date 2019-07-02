@@ -1,7 +1,7 @@
 import os
 import logging
-from .valgrind_parser.valgrind_log_parser import ValgrindLogParser
-from .valgrind_parser.utils.decorators import trycatch
+from valgrind_parser.valgrind_log_parser import ValgrindLogParser
+from valgrind_parser.utils.decorators import trycatch
 
 @trycatch
 def generate_valgrind_report(valgrind_log_file, html_report_location='./valgrind_html_report.html'):
