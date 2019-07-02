@@ -6,9 +6,11 @@ import argparse
 from glob import glob
 from utils.json_helper import JsonHelper
 from utils.html_converter import dump_html_report
+from utils.decorators import singleton, trycatch
 _version = '0.2.1.0'
 
 
+@singleton
 class ValgrindLogParser(object):
     """
     This class helps create HTML report out of a valgrind logs
@@ -68,6 +70,7 @@ class ValgrindLogParser(object):
             self._end_regex = re.compile(self.regex_json.error_end_regexes.get('all_error_end_regex'), re.I)
         return self._end_regex
 
+    @trycatch
     def _parser(self):
         with open(self.valgrind_log_file, 'r') as in_file:
             append_lines_flag = False
