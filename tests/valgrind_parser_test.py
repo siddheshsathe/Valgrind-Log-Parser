@@ -11,7 +11,6 @@ class TestValgrindParser(object):
         os.remove(cls.html_report_location)
 
     def test_json_helper(self):
-        
         from valgrind_parser.valgrind_parser.utils.json_helper import JsonHelper
         j = JsonHelper(self.json_path)
 
