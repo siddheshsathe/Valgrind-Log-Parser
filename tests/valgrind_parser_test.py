@@ -33,4 +33,4 @@ class TestValgrindParser(object):
 
     def test_report_generation_wrapper(self):
         from valgrind_parser import generate_valgrind_report
-        generate_valgrind_report(self.log_path)
+        generate_valgrind_report(self.log_path, html_report_location='./valgrind_html_report.html')
