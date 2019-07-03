@@ -4,8 +4,9 @@ import json2table
 import argparse
 
 from glob import glob
-from utils.json_helper import JsonHelper
-from utils.html_converter import dump_html_report
+from valgrind_parser.valgrind_parser.utils.json_helper import JsonHelper
+from valgrind_parser.valgrind_parser.utils.html_converter import dump_html_report
+from valgrind_parser.valgrind_parser.utils.decorators import trycatch
 _version = '0.2.1.0'
 
 
@@ -18,6 +19,7 @@ class ValgrindLogParser(object):
     """
     __version__ = _version
 
+    @trycatch
     def __init__(
         self,
         valgrind_log_file,     # Single valgrind log file
@@ -68,6 +70,7 @@ class ValgrindLogParser(object):
             self._end_regex = re.compile(self.regex_json.error_end_regexes.get('all_error_end_regex'), re.I)
         return self._end_regex
 
+    @trycatch
     def _parser(self):
         with open(self.valgrind_log_file, 'r') as in_file:
             append_lines_flag = False
