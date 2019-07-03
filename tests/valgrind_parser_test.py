@@ -3,20 +3,20 @@ import pytest
 class TestValgrindParser(object):
     def setup_class(cls):
         cls.html_report_location = './test_html_report.html'
+        cls.log_path = 'valgrind_parser/test_dir/valgrind_log.txt'
+        cls.json_path = 'valgrind_parser/valgrind_parser/data/valgrind_regexes.json'
 
     def teardown_class(cls):
         import os
         os.remove(cls.html_report_location)
 
     def test_json_helper(self):
-        jsonPath = 'valgrind_parser/valgrind_parser/data/valgrind_regexes.json'
         from valgrind_parser.valgrind_parser.utils.json_helper import JsonHelper
-        j = JsonHelper(jsonPath)
+        j = JsonHelper(self.json_path)
 
     def test_log_parser(self):
-        logPath = 'valgrind_parser/test_dir/valgrind_log.txt'
         from valgrind_parser.valgrind_parser.valgrind_log_parser import ValgrindLogParser
-        v = ValgrindLogParser(logPath)
+        v = ValgrindLogParser(self.log_path)
         v._parser()
 
     def test_dump_html_report(self):
@@ -30,3 +30,7 @@ class TestValgrindParser(object):
         }
 
         dump_html_report(errors_dict=errors_dict, html_report_location=self.html_report_location)
+
+    def test_report_generation_wrapper(self):
+        from valgrind_parser import generate_valgrind_report
+        generate_valgrind_report(self.log_path)
