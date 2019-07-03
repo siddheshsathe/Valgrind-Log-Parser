@@ -1,11 +1,12 @@
 from setuptools import setup, find_packages
+from valgrind_parser.valgrind_parser.valgrind_log_parser import _version
 
 import os
 with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
     long_description = f.read()
 
 setup(name='valgrind_parser',
-      version='1.1',
+      version=_version,
       description='The valgrind logs parser. Creates the html report from txt logs.',
       long_description=long_description,
       long_description_content_type='text/markdown',

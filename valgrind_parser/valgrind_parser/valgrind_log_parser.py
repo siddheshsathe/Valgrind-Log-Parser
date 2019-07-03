@@ -6,7 +6,7 @@ import argparse
 from glob import glob
 from utils.json_helper import JsonHelper
 from utils.html_converter import dump_html_report
-_version = '0.2.1.0'
+_version = '1.2'
 
 
 class ValgrindLogParser(object):
