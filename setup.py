@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-from valgrind_parser.valgrind_parser.valgrind_log_parser import _version
+from valgrind_parser.valgrind_log_parser import _version
 
 import os
 with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
