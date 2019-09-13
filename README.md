@@ -14,13 +14,12 @@ One can install valgrind parser tool from pip as well.
 ```bash
 pip install valgrind_parser
 ```
-Import the package as
+Import the function as
 ```python
->>> from valgrind_parser import ValgrindLogParser
->>> vlp = ValgrindLogParser('/path/to/valgrind_logs.txt')
->>> vlp.generate_html_report()
+>>> from valgrind_parser import generate_valgrind_report
+>>> generate_valgrind_report('/path/to/valgrind_logs.txt', '/path/to/html_report.html')
 ```
-This will dump the html report for input `valgrind_logs.txt` in the same directory from where the program was called.
+This will dump the html report for input `valgrind_logs.txt` at the path provided or in the same directory from where the program was called.
 
 ## Cloning the repo
 `Valgrind-Log-Parser` can also be used by cloning the repo locally and using the python file directly.
